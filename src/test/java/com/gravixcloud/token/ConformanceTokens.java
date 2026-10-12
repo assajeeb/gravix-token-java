@@ -185,6 +185,10 @@ public final class ConformanceTokens {
         n++;
       }
     }
+    // Which build of the library minted them: this build's classes, or the jar passed with
+    // -PconformanceJar (e.g. the published one).
+    System.out.println(
+        "library: " + GravixToken.class.getProtectionDomain().getCodeSource().getLocation());
     System.out.println("wrote " + n + " tokens: " + tokens.getAbsolutePath());
     System.out.println("manifest: " + manifest.getAbsolutePath());
   }

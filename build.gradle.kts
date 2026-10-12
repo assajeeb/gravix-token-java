@@ -57,10 +57,24 @@ tasks.test {
 
 // Writes Java-minted tokens for the Go conformance test (GRAVIX_FOREIGN_TOKENS, app APPconf,
 // dummy certificate) plus a manifest of the grants each one must carry. See README.
+//
+// -PconformanceJar=<path to a gravix-token-java jar> mints with THAT jar instead of this build's
+// classes, e.g. the one publishToMavenLocal wrote or one downloaded from Maven Central, so the
+// server-verifier check covers the artifact users actually get. The generator prints the jar
+// (code source) GravixToken was loaded from.
+val conformanceJar = providers.gradleProperty("conformanceJar")
 val conformanceTokens by tasks.registering(JavaExec::class) {
     group = "verification"
     description = "Writes build/conformance/java-tokens.txt (+ .manifest.jsonl) for gravix-token-go/conformance."
-    classpath = sourceSets.test.get().runtimeClasspath
+    val testRuntime = sourceSets.test.get().runtimeClasspath
+    classpath = if (conformanceJar.isPresent) {
+        val jar = file(conformanceJar.get())
+        require(jar.isFile) { "conformanceJar: not a file: $jar" }
+        // The jar first, and this build's own main classes removed, so nothing else can supply them.
+        files(jar) + testRuntime.minus(sourceSets.main.get().output)
+    } else {
+        testRuntime
+    }
     mainClass.set("com.gravixcloud.token.ConformanceTokens")
     args(layout.buildDirectory.dir("conformance").get().asFile.absolutePath)
     outputs.upToDateWhen { false }
