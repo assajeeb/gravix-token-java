@@ -176,9 +176,9 @@ CI without gpg can sign with an in-memory key instead: `signingInMemoryKey` (the
 Per release:
 
 1. Set `version` in `build.gradle.kts` and date the CHANGELOG entry; commit.
-2. Optional dry run: `./gradlew centralBundle` signs and writes `build/central-bundle/gravix-token-java-<version>-bundle.zip`, the same files the upload contains. Nothing leaves the machine.
-3. Unlock the key so gpg-agent holds the passphrase (Gradle runs gpg with `--batch --no-tty`, so it may not be able to ask for it): `export GPG_TTY=$(tty); echo unlock | gpg --clearsign --local-user <key id> > /dev/null`. The agent keeps it for 10 minutes after the last use by default.
-4. `./gradlew publishToMavenCentral` uploads the bundle and prints a deployment id.
+2. Unlock the key so gpg-agent holds the passphrase (Gradle runs gpg with `--batch --no-tty`, so it may not be able to ask for it): `export GPG_TTY=$(tty); echo unlock | gpg --clearsign --local-user <key id> > /dev/null`. The agent keeps it for 10 minutes after the last use by default. Both steps below sign, so unlock first.
+3. Optional dry run: `./gradlew centralBundle` signs and writes `build/central-bundle/gravix-token-java-<version>-bundle.zip`, the same files the upload contains. Nothing leaves the machine.
+4. `./gradlew publishToMavenCentral` uploads the bundle and prints a deployment id. (`publish` stops at the signing guard; `publishAndReleaseToMavenCentral` would skip the manual Publish below.)
 5. In https://central.sonatype.com/publishing/deployments wait for **VALIDATED**, check the file list, press **Publish**. It usually reaches Maven Central within 30 minutes.
 6. Tag the commit `v<version>` and push it to GitHub.
 
