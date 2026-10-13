@@ -3,7 +3,7 @@
 All notable changes to `com.gravixcloud:gravix-token-java`. This project follows
 [semantic versioning](https://semver.org/).
 
-## 0.1.0 (not yet published; dated on release)
+## 0.1.0 (2026-10-13)
 
 - First release. Java port of `gravix-token-go` v0.1.2 / `gravix-rtc-token` 0.1.3 with the
   same claims, defaults and validation: `GravixToken.builder(appId, appCertificate)` with

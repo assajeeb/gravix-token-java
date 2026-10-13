@@ -4,9 +4,6 @@ Mint Gravix Cloud join tokens **in your own Java or Kotlin backend**. The Gravix
 
 Zero runtime dependencies (JDK `javax.crypto` HMAC-SHA256 only). Java 8 or newer; works the same from Kotlin.
 
-> Status: 0.1.0 is release-ready but not yet on Maven Central. Until it is, build it locally with
-> `./gradlew publishToMavenLocal` and add `mavenLocal()` to your repositories.
-
 ## How Gravix tokens work
 
 1. The Gravix console gives your app an **App ID** and an **App Certificate**. Both stay on your server.
